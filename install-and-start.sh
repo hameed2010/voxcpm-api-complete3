@@ -164,26 +164,53 @@ grep -qxF \
 # 11. Create .env
 # ============================================================
 
+# ============================================================
+# 11. Create .env
+# ============================================================
+
 echo ""
 echo "🔐 Configuring .env..."
 
 if [ ! -f "$PROJECT/.env" ]; then
 
-    if [ -f "$PROJECT/.env.example" ]; then
+    cat > "$PROJECT/.env" <<'ENV_EOF'
 
-        cp "$PROJECT/.env.example" "$PROJECT/.env"
+APP_NAME=VoxCPM2 Professional Voice API
+APP_VERSION=1.0.0
+API_KEY=CHANGE_ME_TO_A_LONG_RANDOM_SECRET
 
-        echo "✓ .env created"
+VOXCPM_MODEL_ID=openbmb/VoxCPM2
+WHISPER_MODEL_NAME=large-v3
+ECAPA_SOURCE=speechbrain/spkrec-ecapa-voxceleb
+ECAPA_SAVEDIR=storage/models/ecapa_voxceleb
 
-    else
+DEVICE=cuda
+REFERENCE_SAMPLE_RATE=16000
+OUTPUT_SAMPLE_RATE=48000
+AUDIO_SAMPLE_RATE=24000
 
-        echo "⚠ .env.example not found"
+MAX_FILE_SIZE_MB=100
+MAX_MERGE_FILES=20
 
-    fi
+DEFAULT_CFG=2.0
+DEFAULT_TIMESTEPS=30
+DEFAULT_CANDIDATES=3
+DEFAULT_RETRY_BADCASE=true
+DEFAULT_RETRY_MAX_TIMES=3
+DEFAULT_RETRY_RATIO_THRESHOLD=6.0
+
+OUTPUT_BITRATE=96k
+OUTPUT_CODEC=libopus
+
+HOST=0.0.0.0
+PORT=8000
+ENV_EOF
+
+    echo "✓ .env created"
 
 else
 
-    echo "✓ .env already exists"
+    echo "✓ .env already exists - keeping existing configuration"
 
 fi
 
